@@ -124,7 +124,9 @@ private void NumberRefreshButton_Click(object sender, RoutedEventArgs e)
 ### Betűszín Választás
 
 A `FontColorComboBox_SelectionChanged` metódus frissíti a szöveg színét a felhasználó által választott színnek megfelelően.
-
+- A kiválasztott színnevet átalakítja egy Color objektummá (ColorConverter.ConvertFromString(color)).
+- Ebből létrehoz egy SolidColorBrush-t (egyszínű ecsetet), és
+- Beállítja ezt szövegszínként (Foreground) a RichTextBox-ra.
 ```csharp
 private void FontColorComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
 {
@@ -139,7 +141,9 @@ private void FontColorComboBox_SelectionChanged(object sender, SelectionChangedE
 ### Háttérszín Választás
 
 A `BackgroundColorComboBox_SelectionChanged` metódus frissíti a szöveg háttérszínét a felhasználó által választott színnek megfelelően.
-
+- A color string értéket átalakítja egy Color típusú objektummá a ColorConverter.ConvertFromString() segítségével.
+- Ezután létrehoz belőle egy SolidColorBrush-t (egyszínű festékecset).
+- Végül ezt az ecsetet beállítja a mainRTB háttérszíneként (Background tulajdonság).
 ```csharp
 private void BackgroundColorComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
 {
@@ -154,7 +158,9 @@ private void BackgroundColorComboBox_SelectionChanged(object sender, SelectionCh
 ### Betűtípus Választás
 
 A `FontFamilyComboBox_SelectionChanged` metódus frissíti a szöveg betűtípusát a felhasználó által választott betűtípusnak megfelelően.
-
+- A szövegként kapott betűtípusnévből létrehoz egy FontFamily objektumot.
+- Ezután ezt a betűtípus-családot beállítja a RichTextBox (mainRTB) FontFamily tulajdonságának értékeként.
+- Ennek hatására a teljes szöveg megjelenése megváltozik az új betűtípusnak megfelelően.
 ```csharp
 private void FontFamilyComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
 {
@@ -169,7 +175,13 @@ private void FontFamilyComboBox_SelectionChanged(object sender, SelectionChanged
 ### Mentés Funkció
 
 A szöveg mentésére a `SaveRTBContent` metódust használjuk. Ez a metódus a szöveges tartalmat XAML csomag formátumban menti a fájlba.
-
+1. - Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) → Ez lekéri a felhasználó gépén a "Dokumentumok" mappa elérési útját (pl. C:\Users\Petike\Documents).
+   - Path.Combine(...) → Összefűzi ezt az elérési utat a "test.xaml" fájlnévvel. Így kapsz egy teljes fájlútvonalat, ahova a fájl mentésre kerül.
+2. - TextRange egy osztály, amely egy szövegrészt jelöl ki WPF-ben.
+   - Itt a mainRTB.Document.ContentStart és ContentEnd segítségével a teljes RichTextBox tartomány kerül kijelölésre.
+3. - FileStream megnyit egy új fájlt írásra az előzőleg megadott útvonalon.
+        -FileMode.Create: ha a fájl már létezik, felülírja azt, ha nem létezik, létrehozza.
+   - range.Save(...) → Elmenti a kiválasztott szövegrészt (range) az adott fájlba a megadott formátumban. → A formátum itt: DataFormats.XamlPackage, ami lehetővé teszi a szöveg formázott (pl. félkövér, színes, aláhúzott stb.) mentését, nem csak egyszerű szövegként.
 ```csharp
 private void SaveRTBContent(object sender, RoutedEventArgs e)
 {

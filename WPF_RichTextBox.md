@@ -50,12 +50,8 @@ private void NumberRefreshButton_Click(object sender, RoutedEventArgs e)
 {
     if (sender is Button button)
     {
-        var meret = mainRTB.Selection.GetPropertyValue(TextElement.FontSizeProperty);
-
-        if (meret != DependencyProperty.UnsetValue)
-            FontSizeIndicator.Text = meret.ToString();
-        else
-            FontSizeIndicator.Text = "-";
+        object meret = mainRTB.Selection.GetPropertyValue(TextElement.FontSizeProperty);
+        FontSizeIndicator.Text = meret.ToString();
     }
 }
 ```

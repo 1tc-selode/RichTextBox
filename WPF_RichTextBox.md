@@ -41,50 +41,6 @@ A felhasználói felületet XAML-ban definiáljuk:
 
 A **MainWindow.xaml.cs** fájl tartalmazza a szövegszerkesztő logikáját:
 
-### Mentés Funkció
-
-A szöveg mentésére a `SaveRTBContent` metódust használjuk. Ez a metódus a szöveges tartalmat XAML csomag formátumban menti a fájlba.
-
-```csharp
-private void SaveRTBContent(object sender, RoutedEventArgs e)
-{
-    string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "test.xaml");
-    TextRange range = new TextRange(mainRTB.Document.ContentStart, mainRTB.Document.ContentEnd);
-
-    using (FileStream fStream = new FileStream(path, FileMode.Create))
-    {
-        range.Save(fStream, DataFormats.XamlPackage);
-    }
-
-    MessageBox.Show("Mentés sikeres: " + path);
-}
-```
-
-### Betöltés Funkció
-
-A betöltéshez hasonlóan a `LoadRTBContent` metódust használjuk. Ha a fájl létezik, a tartalom betöltésre kerül.
-
-```csharp
-private void LoadRTBContent(object sender, RoutedEventArgs e)
-{
-    string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "test.xaml");
-
-    if (File.Exists(path))
-    {
-        TextRange range = new TextRange(mainRTB.Document.ContentStart, mainRTB.Document.ContentEnd);
-        using (FileStream fStream = new FileStream(path, FileMode.Open))
-        {
-            range.Load(fStream, DataFormats.XamlPackage);
-        }
-        MessageBox.Show("Betöltés sikeres: " + path);
-    }
-    else
-    {
-        MessageBox.Show("A fájl nem található: " + path);
-    }
-}
-```
-
 ### Betűméret Frissítése
 
 A `NumberRefreshButton_Click` metódus frissíti a betűméret kijelzőt, amikor a felhasználó módosítja a betűméretet.
@@ -149,3 +105,46 @@ private void FontFamilyComboBox_SelectionChanged(object sender, SelectionChanged
 }
 ```
 
+### Mentés Funkció
+
+A szöveg mentésére a `SaveRTBContent` metódust használjuk. Ez a metódus a szöveges tartalmat XAML csomag formátumban menti a fájlba.
+
+```csharp
+private void SaveRTBContent(object sender, RoutedEventArgs e)
+{
+    string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "test.xaml");
+    TextRange range = new TextRange(mainRTB.Document.ContentStart, mainRTB.Document.ContentEnd);
+
+    using (FileStream fStream = new FileStream(path, FileMode.Create))
+    {
+        range.Save(fStream, DataFormats.XamlPackage);
+    }
+
+    MessageBox.Show("Mentés sikeres: " + path);
+}
+```
+
+### Betöltés Funkció
+
+A betöltéshez hasonlóan a `LoadRTBContent` metódust használjuk. Ha a fájl létezik, a tartalom betöltésre kerül.
+
+```csharp
+private void LoadRTBContent(object sender, RoutedEventArgs e)
+{
+    string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "test.xaml");
+
+    if (File.Exists(path))
+    {
+        TextRange range = new TextRange(mainRTB.Document.ContentStart, mainRTB.Document.ContentEnd);
+        using (FileStream fStream = new FileStream(path, FileMode.Open))
+        {
+            range.Load(fStream, DataFormats.XamlPackage);
+        }
+        MessageBox.Show("Betöltés sikeres: " + path);
+    }
+    else
+    {
+        MessageBox.Show("A fájl nem található: " + path);
+    }
+}
+```

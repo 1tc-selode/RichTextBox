@@ -1,5 +1,5 @@
 
-# WPF RichTextBox Alkalmazás - Magyar Magyarázó Fájl
+# WPF RichTextBox Alkalmazás
 
 Ez a WPF alkalmazás egy egyszerű szövegszerkesztőt valósít meg, amely különböző szöveges formázási lehetőségeket kínál a felhasználóknak. A programban a felhasználók a **Félkövér**, **Dőlt**, **Aláhúzott** formázásokat alkalmazhatják, valamint módosíthatják a betűméretet, a betűszínt, a háttérszínt és a betűtípust. Ezen kívül a dokumentumot el lehet menteni és vissza lehet tölteni.
 

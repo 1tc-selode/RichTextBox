@@ -180,8 +180,9 @@ A szöveg mentésére a `SaveRTBContent` metódust használjuk. Ez a metódus a 
 2. - TextRange egy osztály, amely egy szövegrészt jelöl ki WPF-ben.
    - Itt a mainRTB.Document.ContentStart és ContentEnd segítségével a teljes RichTextBox tartomány kerül kijelölésre.
 3. - FileStream megnyit egy új fájlt írásra az előzőleg megadott útvonalon.
-           - FileMode.Create: ha a fájl már létezik, felülírja azt, ha nem létezik, létrehozza.
+   - FileMode.Create: ha a fájl már létezik, felülírja azt, ha nem létezik, létrehozza.
    - range.Save(...) → Elmenti a kiválasztott szövegrészt (range) az adott fájlba a megadott formátumban. → A formátum itt: DataFormats.XamlPackage, ami lehetővé teszi a szöveg formázott (pl. félkövér, színes, aláhúzott stb.) mentését, nem csak egyszerű szövegként.
+4. A MessageBox megjeleníti a felhasználónak egy üzenet formájában, hogy a fájl mentése sikeresen megtörtént.
 ```csharp
 private void SaveRTBContent(object sender, RoutedEventArgs e)
 {
@@ -200,7 +201,14 @@ private void SaveRTBContent(object sender, RoutedEventArgs e)
 ### Betöltés Funkció
 
 A betöltéshez hasonlóan a `LoadRTBContent` metódust használjuk. Ha a fájl létezik, a tartalom betöltésre kerül.
-
+1. - Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) → Ez a metódus a felhasználó Dokumentumok mappájának elérési útját adja vissza, például: C:\Users\Petike\Documents.
+   - Path.Combine(...) → Az előzőleg kapott elérési útvonalhoz hozzáfűzi a fájl nevét ("test.xaml"), így a végén egy teljes elérési utat kapunk a fájlhoz.
+2. File.Exists(path) → Ellenőrzi, hogy a fájl valóban létezik-e a megadott elérési úton.
+3. TextRange → Létrehoz egy szövegtartományt (range), amely a RichTextBox teljes tartalmát jelöli ki. → A ContentStart és ContentEnd a dokumentumban található első és utolsó pozíciókat jelenti, így az egész dokumentumot betöltjük.
+4. - FileStream → Megnyitja a fájlt olvasható módon a FileMode.Open használatával. Ha a fájl nem található, akkor a program nem fogja tudni megnyitni.
+   - range.Load(fStream, DataFormats.XamlPackage) → Betölti a fájl tartalmát a RichTextBox-ba. → A DataFormats.XamlPackage azt jelenti, hogy az XAML formátumban mentett tartalom (amit a korábbi mentési függvény mentett) kerül visszaolvasásra és megjelenítésre. Ez megőrzi a formázást is.
+5. A MessageBox megjeleníti a felhasználónak egy üzenet formájában, hogy a fájl betöltése sikeresen megtörtént.
+6. Ha a fájl nem létezik a megadott elérési úton, a program egy hibajelzést jelenít meg.
 ```csharp
 private void LoadRTBContent(object sender, RoutedEventArgs e)
 {
@@ -221,3 +229,185 @@ private void LoadRTBContent(object sender, RoutedEventArgs e)
     }
 }
 ```
+
+<details>
+<summary>Nyiss le az xaml forrásért!</summary> 
+
+```xaml
+<Window x:Class="Wpf_1_RichTextBox.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Wpf_1_RichTextBox"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <DockPanel Name="mainPanel">
+            <ToolBar Name="mainToolBar" Height="30" DockPanel.Dock="Top">
+                <Button  Command="EditingCommands.ToggleBold" ToolTip="Félkövér">
+                    <TextBlock FontSize="14" Width="20" FontWeight="Bold">B</TextBlock>
+                </Button>
+                <Button Command="EditingCommands.ToggleItalic" ToolTip="Dőlt">
+                    <TextBlock FontSize="14" Width="20" FontStyle="Italic" FontWeight="Bold">I</TextBlock>
+                </Button>
+                <Button Command="EditingCommands.ToggleUnderline" ToolTip="Aláhúzott">
+                    <TextBlock FontSize="14" Width="20" TextDecorations="Underline" FontWeight="Bold">U</TextBlock>
+                </Button>
+                <Button Command="EditingCommands.IncreaseFontSize" Click="NumberRefreshButton_Click" ToolTip="Betűméret növelése">
+                    <TextBlock FontSize="14" Width="20" FontWeight="Bold">A+</TextBlock>
+                </Button>
+                <Button Command="EditingCommands.DecreaseFontSize" Click="NumberRefreshButton_Click" ToolTip="Betűméret csökkentése">
+                    <TextBlock FontSize="14" Width="20" FontWeight="Bold" >A-</TextBlock>
+                </Button>
+                <TextBlock Name="FontSizeIndicator" Text="12" FontSize="14" VerticalAlignment="Center" FontWeight="Bold" Margin="0,0,10,0"/>
+
+                <Button Command="EditingCommands.ToggleBullets" ToolTip="Pontozás">
+                    <TextBlock FontSize="14" Width="35" FontWeight="Bold">pont</TextBlock>
+                </Button>
+                <Button Command="EditingCommands.ToggleNumbering" ToolTip="Számozás">
+                    <TextBlock FontSize="14" Width="40" FontWeight="Bold">szám</TextBlock>
+                </Button>
+                <Button Command="EditingCommands.AlignLeft" ToolTip="Balra rendezés">
+                    <TextBlock FontSize="14"  Width="30" FontWeight="Bold">bal</TextBlock>
+                </Button>
+                <Button Command="EditingCommands.AlignCenter" ToolTip="Középre rendezés">
+                    <TextBlock FontSize="14" Width="45" FontWeight="Bold">közép</TextBlock>
+                </Button>
+                <Button Command="EditingCommands.AlignRight" ToolTip="Jobbra rendezés">
+                    <TextBlock FontSize="14" Width="35" FontWeight="Bold">jobb</TextBlock>
+                </Button>
+                <Button Command="EditingCommands.AlignJustify" ToolTip="Sorkizárás">
+                    <TextBlock FontSize="14" Width="55" FontWeight="Bold">sorkizár</TextBlock>
+                </Button>
+                <TextBlock Text="Betű színe: " VerticalAlignment="Center" FontWeight="Bold" FontSize="14"></TextBlock>
+                <ComboBox Name="FontColorComboBox" SelectionChanged="FontColorComboBox_SelectionChanged" Height="30">
+                    <ComboBoxItem Content="Piros" Tag="Red"/>
+                    <ComboBoxItem Content="Zöld" Tag="Green"/>
+                    <ComboBoxItem Content="Kék" Tag="Blue"/>
+                    <ComboBoxItem Content="Fekete" Tag="Black"/>
+                    <ComboBoxItem Content="Sárga" Tag="Yellow"/>
+                </ComboBox>
+                <TextBlock Text="Háttér színe: " VerticalAlignment="Center" FontWeight="Bold" FontSize="14"></TextBlock>
+                <ComboBox Name="BackgroundColorComboBox" SelectionChanged="BackgroundColorComboBox_SelectionChanged">
+                    <ComboBoxItem Content="Fehér"  Tag="White"/>
+                    <ComboBoxItem Content="Kék" Tag="LightBlue"/>
+                    <ComboBoxItem Content="Zöld" Tag="LightGreen"/>
+                    <ComboBoxItem Content="Sárga" Tag="LightYellow"/>
+                    <ComboBoxItem Content="Szürke" Tag="LightGray"/>
+                </ComboBox>
+                <TextBlock Text="Betűtípus: " VerticalAlignment="Center" FontWeight="Bold" FontSize="14"></TextBlock>
+                <ComboBox Name="FontFamilyComboBox" SelectionChanged="FontFamilyComboBox_SelectionChanged">
+                    <ComboBoxItem Content="Arial" Tag="Arial"/>
+                    <ComboBoxItem Content="Times New Roman" Tag="Times New Roman"/>
+                    <ComboBoxItem Content="Courier New" Tag="Courier New"/>
+                </ComboBox>
+            </ToolBar>
+            <ToolBar DockPanel.Dock="Bottom">
+                <Button Click="SaveRTBContent" FontWeight="Bold" Margin="10,0,20,0">Save</Button>
+                <Button Click="LoadRTBContent" FontWeight="Bold">Load</Button>
+            </ToolBar>
+            <RichTextBox Name="mainRTB" AcceptsTab="True"/>
+        </DockPanel>
+    </Grid>
+</Window>
+
+```
+</details>
+
+<details>
+<summary>Nyiss le az xaml.cs forrásért!</summary> 
+
+```C#
+using System.IO;
+using System.Text;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+
+namespace Wpf_1_RichTextBox
+{
+    /// <summary>
+    /// Interaction logic for MainWindow.xaml
+    /// </summary>
+    public partial class MainWindow : Window
+    {
+        public MainWindow()
+        {
+            InitializeComponent();
+        }
+
+        private void NumberRefreshButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button)
+            {
+                object meret = mainRTB.Selection.GetPropertyValue(TextElement.FontSizeProperty);
+                FontSizeIndicator.Text = meret.ToString();
+            }
+        }
+        private void FontColorComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (FontColorComboBox.SelectedItem is ComboBoxItem selectedItem)
+            {
+                string color = selectedItem.Tag.ToString();
+                mainRTB.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString(color));
+            }
+        }
+        private void BackgroundColorComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (BackgroundColorComboBox.SelectedItem is ComboBoxItem selectedItem)
+            {
+                string color = selectedItem.Tag.ToString();
+                mainRTB.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(color)); 
+            }
+        }
+        private void FontFamilyComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (FontFamilyComboBox.SelectedItem is ComboBoxItem selectedItem)
+            {
+                string fontFamily = selectedItem.Tag.ToString();
+                mainRTB.FontFamily = new FontFamily(fontFamily);
+            }
+        }
+
+        private void SaveRTBContent(object sender, RoutedEventArgs e)
+        {
+            string path = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "test.xaml");
+            TextRange range = new TextRange(mainRTB.Document.ContentStart, mainRTB.Document.ContentEnd);
+
+            using (FileStream fStream = new FileStream(path, FileMode.Create))
+            {
+                range.Save(fStream, DataFormats.XamlPackage);
+            }
+
+            MessageBox.Show("Mentés sikeres: " + path);
+        }
+
+        private void LoadRTBContent(object sender, RoutedEventArgs e)
+        {
+            string path = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "test.xaml");
+
+            if (File.Exists(path))
+            {
+                TextRange range = new TextRange(mainRTB.Document.ContentStart, mainRTB.Document.ContentEnd);
+                using (FileStream fStream = new FileStream(path, FileMode.Open))
+                {
+                    range.Load(fStream, DataFormats.XamlPackage);
+                }
+                MessageBox.Show("Betöltés sikeres: " + path);
+            }
+            else
+            {
+                MessageBox.Show("A fájl nem található: " + path);
+            }
+        }
+    }
+}
+```
+</details>

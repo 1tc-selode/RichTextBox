@@ -180,7 +180,7 @@ A szöveg mentésére a `SaveRTBContent` metódust használjuk. Ez a metódus a 
 2. - TextRange egy osztály, amely egy szövegrészt jelöl ki WPF-ben.
    - Itt a mainRTB.Document.ContentStart és ContentEnd segítségével a teljes RichTextBox tartomány kerül kijelölésre.
 3. - FileStream megnyit egy új fájlt írásra az előzőleg megadott útvonalon.
-        -FileMode.Create: ha a fájl már létezik, felülírja azt, ha nem létezik, létrehozza.
+           - FileMode.Create: ha a fájl már létezik, felülírja azt, ha nem létezik, létrehozza.
    - range.Save(...) → Elmenti a kiválasztott szövegrészt (range) az adott fájlba a megadott formátumban. → A formátum itt: DataFormats.XamlPackage, ami lehetővé teszi a szöveg formázott (pl. félkövér, színes, aláhúzott stb.) mentését, nem csak egyszerű szövegként.
 ```csharp
 private void SaveRTBContent(object sender, RoutedEventArgs e)

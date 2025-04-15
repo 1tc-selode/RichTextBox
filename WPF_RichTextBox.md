@@ -149,6 +149,3 @@ private void FontFamilyComboBox_SelectionChanged(object sender, SelectionChanged
 }
 ```
 
-## Következtetés
-
-Ez a WPF alkalmazás egy egyszerű szövegszerkesztőt kínál a felhasználóknak, amely lehetővé teszi számukra, hogy különböző formázásokat alkalmazzanak a szövegre, valamint elmentsék és betöltsék a dokumentumokat XAML formátumban. Az alkalmazás egyszerűen bővíthető további funkciókkal, például képek, táblázatok vagy egyéb formázási lehetőségek hozzáadásával.

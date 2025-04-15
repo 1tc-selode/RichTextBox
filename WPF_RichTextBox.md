@@ -107,7 +107,9 @@ A **MainWindow.xaml.cs** fájl tartalmazza a szövegszerkesztő logikáját:
 ### Betűméret Frissítése
 
 A `NumberRefreshButton_Click` metódus frissíti a betűméret kijelzőt, amikor a felhasználó módosítja a betűméretet.
-
+- A mainRTB.Selection az aktuálisan kijelölt szövegrészt jelenti a RichTextBox-ban.
+- A GetPropertyValue(...) függvény lekéri egy adott tulajdonság (itt a FontSize, azaz betűméret) konkrét értékét a kijelölt szövegre vonatkozóan.
+- Ha a kijelölt rész többféle betűméretet tartalmaz, akkor visszaad egy speciális értéket (DependencyProperty.UnsetValue), különben visszaadja a tényleges méretet (pl. 12.0).
 ```csharp
 private void NumberRefreshButton_Click(object sender, RoutedEventArgs e)
 {

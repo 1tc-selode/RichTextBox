@@ -21,20 +21,83 @@ A felhasználói felületet XAML-ban definiáljuk:
 <Window x:Class="Wpf_1_RichTextBox.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Wpf_1_RichTextBox"
+        mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
         <DockPanel Name="mainPanel">
             <ToolBar Name="mainToolBar" Height="30" DockPanel.Dock="Top">
-                <!-- Gombok és szöveges elemek -->
+                <Button  Command="EditingCommands.ToggleBold" ToolTip="Félkövér">
+                    <TextBlock FontSize="14" Width="20" FontWeight="Bold">B</TextBlock>
+                </Button>
+                <Button Command="EditingCommands.ToggleItalic" ToolTip="Dőlt">
+                    <TextBlock FontSize="14" Width="20" FontStyle="Italic" FontWeight="Bold">I</TextBlock>
+                </Button>
+                <Button Command="EditingCommands.ToggleUnderline" ToolTip="Aláhúzott">
+                    <TextBlock FontSize="14" Width="20" TextDecorations="Underline" FontWeight="Bold">U</TextBlock>
+                </Button>
+                <Button Command="EditingCommands.IncreaseFontSize" Click="NumberRefreshButton_Click" ToolTip="Betűméret növelése">
+                    <TextBlock FontSize="14" Width="20" FontWeight="Bold">A+</TextBlock>
+                </Button>
+                <Button Command="EditingCommands.DecreaseFontSize" Click="NumberRefreshButton_Click" ToolTip="Betűméret csökkentése">
+                    <TextBlock FontSize="14" Width="20" FontWeight="Bold" >A-</TextBlock>
+                </Button>
+                <TextBlock Name="FontSizeIndicator" Text="12" FontSize="14" VerticalAlignment="Center" FontWeight="Bold" Margin="0,0,10,0"/>
+
+                <Button Command="EditingCommands.ToggleBullets" ToolTip="Pontozás">
+                    <TextBlock FontSize="14" Width="35" FontWeight="Bold">pont</TextBlock>
+                </Button>
+                <Button Command="EditingCommands.ToggleNumbering" ToolTip="Számozás">
+                    <TextBlock FontSize="14" Width="40" FontWeight="Bold">szám</TextBlock>
+                </Button>
+                <Button Command="EditingCommands.AlignLeft" ToolTip="Balra rendezés">
+                    <TextBlock FontSize="14"  Width="30" FontWeight="Bold">bal</TextBlock>
+                </Button>
+                <Button Command="EditingCommands.AlignCenter" ToolTip="Középre rendezés">
+                    <TextBlock FontSize="14" Width="45" FontWeight="Bold">közép</TextBlock>
+                </Button>
+                <Button Command="EditingCommands.AlignRight" ToolTip="Jobbra rendezés">
+                    <TextBlock FontSize="14" Width="35" FontWeight="Bold">jobb</TextBlock>
+                </Button>
+                <Button Command="EditingCommands.AlignJustify" ToolTip="Sorkizárás">
+                    <TextBlock FontSize="14" Width="55" FontWeight="Bold">sorkizár</TextBlock>
+                </Button>
+                <TextBlock Text="Betű színe: " VerticalAlignment="Center" FontWeight="Bold" FontSize="14"></TextBlock>
+                <ComboBox Name="FontColorComboBox" SelectionChanged="FontColorComboBox_SelectionChanged" Height="30">
+                    <ComboBoxItem Content="Piros" Tag="Red"/>
+                    <ComboBoxItem Content="Zöld" Tag="Green"/>
+                    <ComboBoxItem Content="Kék" Tag="Blue"/>
+                    <ComboBoxItem Content="Fekete" Tag="Black"/>
+                    <ComboBoxItem Content="Sárga" Tag="Yellow"/>
+                </ComboBox>
+                <TextBlock Text="Háttér színe: " VerticalAlignment="Center" FontWeight="Bold" FontSize="14"></TextBlock>
+                <ComboBox Name="BackgroundColorComboBox" SelectionChanged="BackgroundColorComboBox_SelectionChanged">
+                    <ComboBoxItem Content="Fehér"  Tag="White"/>
+                    <ComboBoxItem Content="Kék" Tag="LightBlue"/>
+                    <ComboBoxItem Content="Zöld" Tag="LightGreen"/>
+                    <ComboBoxItem Content="Sárga" Tag="LightYellow"/>
+                    <ComboBoxItem Content="Szürke" Tag="LightGray"/>
+                </ComboBox>
+                <TextBlock Text="Betűtípus: " VerticalAlignment="Center" FontWeight="Bold" FontSize="14"></TextBlock>
+                <ComboBox Name="FontFamilyComboBox" SelectionChanged="FontFamilyComboBox_SelectionChanged">
+                    <ComboBoxItem Content="Arial" Tag="Arial"/>
+                    <ComboBoxItem Content="Times New Roman" Tag="Times New Roman"/>
+                    <ComboBoxItem Content="Courier New" Tag="Courier New"/>
+                </ComboBox>
             </ToolBar>
             <ToolBar DockPanel.Dock="Bottom">
-                <Button Click="SaveRTBContent">Save</Button>
-                <Button Click="LoadRTBContent">Load</Button>
+                <Button Click="SaveRTBContent" FontWeight="Bold" Margin="10,0,20,0">Save</Button>
+                <Button Click="LoadRTBContent" FontWeight="Bold">Load</Button>
             </ToolBar>
+
             <RichTextBox Name="mainRTB" AcceptsTab="True"/>
+            
         </DockPanel>
     </Grid>
 </Window>
+
 ```
 
 ## C# Kód

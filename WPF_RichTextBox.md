@@ -16,6 +16,23 @@ A felhasználói felület a következő főbb elemekből áll:
 ## XAML Kód
 
 A felhasználói felületet XAML-ban definiáljuk:
+- A DockPanel egy olyan konténer típus, amely lehetővé teszi, hogy az alatta elhelyezkedő elemeket dockoljunk, azaz egymás mellett, illetve egymás alatt elhelyezkedjenek. A DockPanel az elemeket a négy fő irányba tudja elrendezni: Top, Bottom, Left, Right.
+- A ToolBar egy vezérlőelem, amely gyakran gombokat, ikonokat vagy egyéb eszközöket tartalmaz, amelyek interakcióba léphetnek a felhasználóval. Az eszköztárak segítenek a gyors hozzáférés biztosításában különböző műveletekhez. Az ToolBar elem lehetővé teszi, hogy a gombok szépen és áttekinthetően jelenjenek meg egymás mellett.
+- AcceptsTab="True" azt jelenti, hogy a RichTextBox Tab billentyű lenyomása esetén behúzást (indentálást) alkalmaz, nem csak fókuszál az adott vezérlőelemre. Ez a funkció hasznos lehet például, ha a felhasználó listákat ír, vagy dokumentumokat formáz, és tabulátorokat szeretne használni.
+
+A `Command` egy olyan mechanizmus, amely a felhasználói interakciókat (pl. gombkattintásokat) absztrahálja, és azokat egy logikai művelethez köti. A következő `EditingCommands` parancsok használatosak a `ToolBar` gombjaiban:
+
+- **`EditingCommands.ToggleBold`**: A szöveg félkövér formázását váltogatja.
+- **`EditingCommands.ToggleItalic`**: A szöveg dőlt formázását kapcsolja be vagy ki.
+- **`EditingCommands.ToggleUnderline`**: A szöveg aláhúzott formázását váltogatja.
+- **`EditingCommands.IncreaseFontSize`**: A szöveg betűméretét növeli.
+- **`EditingCommands.DecreaseFontSize`**: A szöveg betűméretét csökkenti.
+- **`EditingCommands.ToggleBullets`**: A szöveges listák pontozását (bullet points) kapcsolja be vagy ki.
+- **`EditingCommands.ToggleNumbering`**: A számozott listát hozza létre, vagy kapcsolja ki azt.
+- **`EditingCommands.AlignLeft`**: A szöveget balra igazítja.
+- **`EditingCommands.AlignCenter`**: A szöveget középre igazítja.
+- **`EditingCommands.AlignRight`**: A szöveget jobbra igazítja.
+- **`EditingCommands.AlignJustify`**: A szöveget sorkizárásra rendezi.
 
 ```xml
 <Window x:Class="Wpf_1_RichTextBox.MainWindow"

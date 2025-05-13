@@ -13,6 +13,9 @@ A felhasználói felület a következő főbb elemekből áll:
 - **Betűtípus választó:** A különböző betűtípusok kiválasztására szolgáló legördülő menü.
 - **Mentés és Betöltés gombok:** A szöveg mentésére és betöltésére szolgáló gombok.
 
+  ![Képernyőkép 2025-05-13 234542](https://github.com/user-attachments/assets/83ab129a-59c1-4de7-bec3-668cbbbdf4e7)
+
+
 ## XAML Kód
 
 A felhasználói felületet XAML-ban definiáljuk:

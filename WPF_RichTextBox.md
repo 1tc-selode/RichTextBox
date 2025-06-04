@@ -85,7 +85,7 @@ A `Command` egy olyan mechanizmus, amely a felhasználói interakciókat (pl. go
                     <TextBlock FontSize="14" Width="55" FontWeight="Bold">sorkizár</TextBlock>
                 </Button>
                 <TextBlock Text="Betű színe: " VerticalAlignment="Center" FontWeight="Bold" FontSize="14"></TextBlock>
-                <ComboBox Name="FontColorComboBox" SelectionChanged="FontColorComboBox_SelectionChanged" Height="30">
+                <ComboBox Name="FontColorComboBox" SelectedIndex="3" SelectionChanged="FontColorComboBox_SelectionChanged" Height="30">
                     <ComboBoxItem Content="Piros" Tag="Red"/>
                     <ComboBoxItem Content="Zöld" Tag="Green"/>
                     <ComboBoxItem Content="Kék" Tag="Blue"/>
@@ -93,7 +93,7 @@ A `Command` egy olyan mechanizmus, amely a felhasználói interakciókat (pl. go
                     <ComboBoxItem Content="Sárga" Tag="Yellow"/>
                 </ComboBox>
                 <TextBlock Text="Háttér színe: " VerticalAlignment="Center" FontWeight="Bold" FontSize="14"></TextBlock>
-                <ComboBox Name="BackgroundColorComboBox" SelectionChanged="BackgroundColorComboBox_SelectionChanged">
+                <ComboBox Name="BackgroundColorComboBox" SelectedIndex="0" SelectionChanged="BackgroundColorComboBox_SelectionChanged">
                     <ComboBoxItem Content="Fehér"  Tag="White"/>
                     <ComboBoxItem Content="Kék" Tag="LightBlue"/>
                     <ComboBoxItem Content="Zöld" Tag="LightGreen"/>
@@ -150,7 +150,7 @@ A `FontColorComboBox_SelectionChanged` metódus frissíti a szöveg színét a f
 ```csharp
 private void FontColorComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
 {
-    if (FontColorComboBox.SelectedItem is ComboBoxItem selectedItem)
+    if (mainRTB != null && FontColorComboBox.SelectedItem is ComboBoxItem selectedItem)
     {
         string color = selectedItem.Tag.ToString();
         mainRTB.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString(color));
@@ -167,7 +167,7 @@ A `BackgroundColorComboBox_SelectionChanged` metódus frissíti a szöveg hátt�
 ```csharp
 private void BackgroundColorComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
 {
-    if (BackgroundColorComboBox.SelectedItem is ComboBoxItem selectedItem)
+    if (mainRTB != null && BackgroundColorComboBox.SelectedItem is ComboBoxItem selectedItem)
     {
         string color = selectedItem.Tag.ToString();
         mainRTB.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(color)); 
@@ -301,7 +301,7 @@ private void LoadRTBContent(object sender, RoutedEventArgs e)
                     <TextBlock FontSize="14" Width="55" FontWeight="Bold">sorkizár</TextBlock>
                 </Button>
                 <TextBlock Text="Betű színe: " VerticalAlignment="Center" FontWeight="Bold" FontSize="14"></TextBlock>
-                <ComboBox Name="FontColorComboBox" SelectionChanged="FontColorComboBox_SelectionChanged" Height="30">
+                <ComboBox Name="FontColorComboBox" SelectedIndex="3" SelectionChanged="FontColorComboBox_SelectionChanged" Height="30">
                     <ComboBoxItem Content="Piros" Tag="Red"/>
                     <ComboBoxItem Content="Zöld" Tag="Green"/>
                     <ComboBoxItem Content="Kék" Tag="Blue"/>
@@ -309,7 +309,7 @@ private void LoadRTBContent(object sender, RoutedEventArgs e)
                     <ComboBoxItem Content="Sárga" Tag="Yellow"/>
                 </ComboBox>
                 <TextBlock Text="Háttér színe: " VerticalAlignment="Center" FontWeight="Bold" FontSize="14"></TextBlock>
-                <ComboBox Name="BackgroundColorComboBox" SelectionChanged="BackgroundColorComboBox_SelectionChanged">
+                <ComboBox Name="BackgroundColorComboBox" SelectedIndex="0" SelectionChanged="BackgroundColorComboBox_SelectionChanged">
                     <ComboBoxItem Content="Fehér"  Tag="White"/>
                     <ComboBoxItem Content="Kék" Tag="LightBlue"/>
                     <ComboBoxItem Content="Zöld" Tag="LightGreen"/>
@@ -373,7 +373,7 @@ namespace Wpf_1_RichTextBox
         }
         private void FontColorComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (FontColorComboBox.SelectedItem is ComboBoxItem selectedItem)
+            if (mainRTB != null && FontColorComboBox.SelectedItem is ComboBoxItem selectedItem)
             {
                 string color = selectedItem.Tag.ToString();
                 mainRTB.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString(color));
@@ -381,7 +381,7 @@ namespace Wpf_1_RichTextBox
         }
         private void BackgroundColorComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (BackgroundColorComboBox.SelectedItem is ComboBoxItem selectedItem)
+            if (mainRTB != null && BackgroundColorComboBox.SelectedItem is ComboBoxItem selectedItem)
             {
                 string color = selectedItem.Tag.ToString();
                 mainRTB.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(color)); 
